@@ -51,11 +51,25 @@ def get_bubblesort(arrays: ArrayObj):
 
 @app.post("/merge")
 def get_mergesort(arrays:ArrayObj):
-    comparions =0
+    logArray = {}
+    logNum = {}
+    step = 1
     def merge(arr, l, m, r):
+        nonlocal step
+        if l < len(arr) / 2 and r != len(arr) -1 :
+            logNum[step] = 'left half'
+            print('left half')
+        elif l >= len(arr) / 2 :
+            logNum[step] = 'right half'
+            print('right half')
+        else:
+            print(l,m,r)
+            logNum[step] = 'full array'
+            print('full array')
+        logArray[step] = [step]
         n1 = m - l + 1
         n2 = r - m
-    
+        print('n1: ',n1,' n2: ',n2)
         # create temp arrays
         L = [0] * (n1)
         R = [0] * (n2)
@@ -71,30 +85,40 @@ def get_mergesort(arrays:ArrayObj):
         i = 0     # Initial index of first subarray
         j = 0     # Initial index of second subarray
         k = l     # Initial index of merged subarray
-    
+        print('left array: ',L,' right array: ',R)
+        compar1 = f"left array: {L}, right array: {R}"
+        logArray[step].append(compar1)
         while i < n1 and j < n2:
+            print('compare',L[i],' vs ',R[j])
+            compar2 = f"compare {L[i]} vs {R[j]}"
+            logArray[step].append(compar2)
             if L[i] <= R[j]:
                 arr[k] = L[i]
                 i += 1
             else:
                 arr[k] = R[j]
                 j += 1
+            print(f'new index {k} value of {arr[k]}')
             k += 1
-    
+        print('current state of merge sort without checking remainders')
+        print(arr)
         # Copy the remaining elements of L[], if there
         # are any
+        print(f'current k:{k} and i:{i}')
         while i < n1:
             arr[k] = L[i]
             i += 1
             k += 1
-    
+        print('left array joined',arr)
         # Copy the remaining elements of R[], if there
         # are any
+        print(f'current k:{k} and j:{j}')
         while j < n2:
             arr[k] = R[j]
             j += 1
             k += 1
-    
+        print('right array joined',arr)
+        step += 1
     # l is for left index and r is right index of the
     # sub-array of arr to be sorted
     
@@ -108,8 +132,10 @@ def get_mergesort(arrays:ArrayObj):
             m = l+(r-l)//2
     
             # Sort first and second halves
+            print(f'split point for both arrays: index {m} which has a value of {arr[m]}\n(splits up to this value for the left array, over for the right)')
             mergeSort(arr, l, m)
             mergeSort(arr, m+1, r)
+            print('reached merge function')
             merge(arr, l, m, r)
         
     
@@ -120,7 +146,8 @@ def get_mergesort(arrays:ArrayObj):
     n = len(arr)
     
     mergeSort(arr, 0, n-1)
-    return {"og_array":ogarr,"sorted_array": arrays.og_array,"comparions":(math.ciel(n*math.log2(n)-(n-1)))}
+    # "comparions":(math.ciel(n*math.log2(n)-(n-1)))
+    return {"og_array":ogarr,"sorted_array": arrays.og_array,'steps':logArray,'steps_detailed':logNum}
 @app.post("/quick")
 def get_quicksort(arrays:ArrayObj):
     def partition(array, low, high):
