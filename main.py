@@ -20,6 +20,8 @@ def get_bubblesort(arrays: ArrayObj):
     arr = arrays.og_array
     swapped_num = 0
     comparisons = 0
+    bubble_log= {}
+    step = 1
     # optimize code, so if the array is already sorted, it doesn't need
     # to go through the entire process
     # Traverse through all array elements
@@ -35,19 +37,23 @@ def get_bubblesort(arrays: ArrayObj):
             # Swap if the element found is greater
             # than the next element
             comparisons += 1
-            print('compare ',arr[j],' vs ',[arr[j+1]])
+            compar = (f'compare ',arr[j],' vs ',arr[j+1])
+            bubble_log[step] = [compar]
             if arr[j] > arr[j + 1]:
                 swapped = True
                 swapped_num += 1
+                swap = f'{arr[j]} swapped with {arr[j+1]}'
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                bubble_log[step].append(swapped)
+                bubble_log[step].append(swap)
                 print(arr)
-            
+            step += 1
         if not swapped:
             # if we haven't needed to make a single swap, we
             # can just exit the main loop.
-            return {"org_array": ogarr,"sorted_array": arr,"actual":swapped_num,"theoretical":(n*n-1),"comparisons":comparisons} 
+            return {"org_array": ogarr,"sorted_array": arr,"actual":swapped_num,"theoretical":(n*n-1),"comparisons":comparisons,"steps":bubble_log} 
         
-    return {"org_array": ogarr,"sorted_array": arr,"actual":swapped_num,"theoretical":(n*n),"comparisons":comparisons}
+    return {"org_array": ogarr,"sorted_array": arr,"actual":swapped_num,"theoretical":(n*n),"comparisons":comparisons,"steps":bubble_log}
 
 @app.post("/merge")
 def get_mergesort(arrays:ArrayObj):
