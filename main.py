@@ -157,26 +157,28 @@ def get_mergesort(arrays:ArrayObj):
 @app.post("/quick")
 def get_quicksort(arrays:ArrayObj):
     def partition(array, low, high):
- 
+        print(low,high)
     # choose the rightmost element as pivot
         pivot = array[high]
-    
+        print('starting pivot: ',pivot)
         # pointer for greater element
         i = low - 1
     
         # traverse through all elements
         # compare each element with pivot
         for j in range(low, high):
+            print(f'{array[j]} vs {pivot}')
             if array[j] <= pivot:
     
                 # If element smaller than pivot is found
                 # swap it with the greater element pointed by i
                 i = i + 1
-    
+                print(f'swapping elements {array[i]}(index {i}) and {array[j]}(index {j})')
                 # Swapping element at i with element at j
                 (array[i], array[j]) = (array[j], array[i])
     
         # Swap the pivot element with the greater element specified by i
+        print(f'finished loop, swapping pivot, swapping places from {array[high]} to {array[i+1]}')
         (array[i + 1], array[high]) = (array[high], array[i + 1])
     
         # Return the position from where partition is done
