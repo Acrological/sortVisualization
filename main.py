@@ -149,31 +149,35 @@ def get_mergesort(arrays:ArrayObj):
     return {"og_array":ogarr,"sorted_array": arrays.og_array,'steps':logArray,'steps_detailed':logNum}
 @app.post("/quick")
 def get_quicksort(arrays:ArrayObj):
+    step = 1
+    quick_log = {}
     def partition(array, low, high):
-        print(low,high)
+        nonlocal step
+        quick_log[step] = [step]
+        quick_log[step].append(f'array low: {low}, high: {high}')
     # choose the rightmost element as pivot
         pivot = array[high]
-        print('starting pivot: ',pivot)
+        quick_log[step].append(f'starting pivot value: {pivot} , index {high}')
         # pointer for greater element
         i = low - 1
     
         # traverse through all elements
         # compare each element with pivot
         for j in range(low, high):
-            print(f'{array[j]} vs {pivot}')
+            quick_log[step].append(f'{array[j]} vs {pivot}')
             if array[j] <= pivot:
     
                 # If element smaller than pivot is found
                 # swap it with the greater element pointed by i
                 i = i + 1
-                print(f'swapping elements {array[i]}(index {i}) and {array[j]}(index {j})')
+                quick_log[step].append(f'swapping elements {array[i]}(index {i}) and {array[j]}(index {j})')
                 # Swapping element at i with element at j
                 (array[i], array[j]) = (array[j], array[i])
     
         # Swap the pivot element with the greater element specified by i
-        print(f'finished loop, swapping pivot, swapping places from {array[high]} to {array[i+1]}')
+        quick_log[step].append(f'finished loop, swapping pivot, swapping places from {array[high]} to {array[i+1]}')
         (array[i + 1], array[high]) = (array[high], array[i + 1])
-    
+        step += 1
         # Return the position from where partition is done
         return i + 1
  
@@ -199,4 +203,4 @@ def get_quicksort(arrays:ArrayObj):
     ogarr = [item for item in arrays.og_array]
     size = len(data)
     quickSort(data, 0, size - 1)
-    return {"og_array":ogarr,"sorted_array": arrays.og_array,}
+    return {"og_array":ogarr,"sorted_array": arrays.og_array,"steps":quick_log}
