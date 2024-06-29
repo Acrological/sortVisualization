@@ -46,7 +46,6 @@ def get_bubblesort(arrays: ArrayObj):
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
                 bubble_log[step].append(swapped)
                 bubble_log[step].append(swap)
-                print(arr)
             step += 1
         if not swapped:
             # if we haven't needed to make a single swap, we
@@ -67,7 +66,6 @@ def get_mergesort(arrays:ArrayObj):
         elif l >= len(arr) / 2 :
             logNum[step] = 'right half'
         else:
-            print(l,m,r)
             logNum[step] = 'full array'
         logArray[step] = [step]
         n1 = m - l + 1
@@ -123,7 +121,6 @@ def get_mergesort(arrays:ArrayObj):
     
     
     def mergeSort(arr, l, r):
-        print('compare ',l , ' and ',r)
         if l < r:
     
             # Same as (l+r)//2, but avoids overflow for
@@ -131,10 +128,8 @@ def get_mergesort(arrays:ArrayObj):
             m = l+(r-l)//2
     
             # Sort first and second halves
-            print(f'split point for both arrays: index {m} which has a value of {arr[m]}\n(splits up to this value for the left array, over for the right)')
             mergeSort(arr, l, m)
             mergeSort(arr, m+1, r)
-            print('reached merge function')
             merge(arr, l, m, r)
         
     
